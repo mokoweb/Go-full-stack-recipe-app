@@ -24,15 +24,17 @@ app.use((req, res, next) => {
 
   app.use(bodyParser.json());
 
-  app.post('/api/recipe', (req, res, next) => {
+  app.post('/api/recipes', (req, res, next) => {
+   
     const recipe = new Recipe({
 
-        name: req.body.name,
-        cookTime: req.body.cookTime,
-        Ingredients: req.body.ingredients,
-        Instructions: req.body.instructions,
-        Difficulty: req.body.difficulty
+        title: req.body.title,
+        time: req.body.time,
+        ingredients: req.body.ingredients,
+        instructions: req.body.instructions,
+        difficulty: req.body.difficulty
     });
+
     recipe.save().then(
       () => {
         res.status(201).json({
@@ -48,7 +50,7 @@ app.use((req, res, next) => {
     );
   });
 
-  app.use('/api/recipes', (req, res, next) => {
+  app.get('/api/recipes', (req, res, next) => {
     Recipe.find().then(
       (recipes) => {
         res.status(200).json(recipes);
@@ -67,6 +69,7 @@ app.use((req, res, next) => {
       _id: req.params.id
     }).then(
       (recipe) => {
+        //console
         res.status(200).json(recipe);
       }
     ).catch(
@@ -79,13 +82,14 @@ app.use((req, res, next) => {
   });
 
   app.put('/api/recipes/:id', (req, res, next) => {
+    //con
     const recipe = new Recipe({
       _id: req.params.id,
-        name: req.body.name,
-        cookTime: req.body.cookTime,
-        Ingredients: req.body.ingredients,
-        Instructions: req.body.instructions,
-        Difficulty: req.body.difficulty
+      title: req.body.title,
+      time: req.body.time,
+      ingredients: req.body.ingredients,
+      instructions: req.body.instructions,
+      difficulty: req.body.difficulty
     });
     Recipe.updateOne({_id: req.params.id}, recipe).then(
       () => {
