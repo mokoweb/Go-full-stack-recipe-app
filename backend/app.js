@@ -1,7 +1,8 @@
 const bodyParser = require('body-parser');
 const express = require('express');
 const mongoose = require('mongoose');
-
+const path = require('path');
+app.use('/images', express.static(path.join(__dirname, 'images')));
 const recipeRoutes = require('./routes/recipe')
 const userRoutes = require('./routes/user')
 const app = express();

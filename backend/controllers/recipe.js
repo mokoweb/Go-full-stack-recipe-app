@@ -1,12 +1,16 @@
+const fs = require('fs');
 const Recipe = require('../models/recipe')
 
 exports.createRecipe =  (req, res, next) => {
-   
+  req.body.recipe = JSON.parse(req.body.recipe);
+  const url = req.protocol + '://' + req.get('host'); 
+
     const recipe = new Recipe({
 
         title: req.body.title,
         time: req.body.time,
         ingredients: req.body.ingredients,
+        imageUrl: url + '/images/' + req.file.filename,
         instructions: req.body.instructions,
         difficulty: req.body.difficulty
     });
@@ -83,6 +87,10 @@ exports.createRecipe =  (req, res, next) => {
   }
 
   exports.deleteOneRecipe =  (req, res, next) => {
+    Recipe.findOne({_id: req.params.id}).then(
+      (recipe) => {
+        const filename = recipe.imageUrl.split('/images/')[1];
+        fs.unlink('images/' + filename, () => {
     Recipe.deleteOne({_id: req.params.id}).then(
       () => {
         res.status(200).json({
@@ -96,4 +104,7 @@ exports.createRecipe =  (req, res, next) => {
         });
       }
     );
-  }
+  });
+}
+    );
+};

@@ -1,9 +1,12 @@
 
 const express =  require('express')
 const router = express.Router()
-const recipeCtrl = require('../controllers/recipe')
+
 const auth = require('../middleware/auth')
-router.post('/', auth, recipeCtrl.createRecipe)
+
+const multer = require('../middleware/multer-config')
+const recipeCtrl = require('../controllers/recipe')
+router.post('/', auth, multer, recipeCtrl.createRecipe)
 
   router.get('/', auth, recipeCtrl.getAllRecipe);
 
